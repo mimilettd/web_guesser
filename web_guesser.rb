@@ -11,13 +11,13 @@ class WebGuesser
   def check_guess(guess)
     guess = guess.to_i
     if guess > @@secret_number
-      if guess + 5 > @@secret_number
+      if guess > @@secret_number + 5
         message = "Way too high!"
       else
         message = "Too high!"
       end
     elsif guess < @@secret_number
-      if guess - 5 < @@secret_number
+      if guess < @@secret_number - 5
         message = "Way too low!"
       else
         message = "Too low!"
@@ -28,6 +28,15 @@ class WebGuesser
     return message
   end
 
+  def match_color_with_message(message)
+    if message == "Way too high!"
+      color = "#ff0000"
+    elsif message == "Too high!"
+      color = "#ffcccc"
+    end
+    color
+  end
+
 end
 
 wg = WebGuesser.new
@@ -35,6 +44,7 @@ get '/' do
   guess = params['guess']
   if guess
     message = wg.check_guess(guess)
+    color = wg.match_color_with_message(message)
   end
-  erb :index, :locals => {:message => message}
+  erb :index, :locals => {:message => message, :color => color}
 end
