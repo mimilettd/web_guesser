@@ -3,14 +3,13 @@ require 'sinatra/reloader'
 
 class WebGuesser
   @@secret_number = rand(100)
-  @@guess_counter = 5
 
   def secret_number
     @@secret_number
   end
 
-  def guess_counter
-    @@guess_counter
+  def reset
+    @@secret_number = rand(100)
   end
 
   def check_guess(guess)
@@ -29,6 +28,7 @@ class WebGuesser
       end
     else
       message = "You got it right! The SECRET NUMBER is #{@@secret_number}."
+      reset
     end
     return message
   end
@@ -42,12 +42,6 @@ class WebGuesser
     color
   end
 
-  def countdown
-    until @@guess_counter == 0
-      @guess_counter - 1
-    end
-  end
-
 end
 
 wg = WebGuesser.new
@@ -56,7 +50,6 @@ get '/' do
   if guess
     message = wg.check_guess(guess)
     color = wg.match_color_with_message(message)
-    wg.countdown
   end
   erb :index, :locals => {:message => message, :color => color}
 end
