@@ -15,29 +15,46 @@ class WebGuesser
   def check_guess(guess)
     guess = guess.to_i
     if guess > @@secret_number
-      if guess > @@secret_number + 5
-        message = "Way too high!"
-      else
-        message = "Too high!"
-      end
+      too_high(guess)
     elsif guess < @@secret_number
-      if guess < @@secret_number - 5
-        message = "Way too low!"
-      else
-        message = "Too low!"
-      end
+      too_low(guess)
+    elsif guess == @@secret_number
+      perfect_guess
+    end
+  end
+
+  def too_high(guess)
+    if guess > @@secret_number + 5
+      message = "Way too high!"
     else
-      message = "You got it right! The SECRET NUMBER is #{@@secret_number}."
-      reset
+      message = "Too high!"
     end
     return message
   end
+
+  def too_low(guess)
+    if guess < @@secret_number - 5
+      message = "Way too low!"
+    else
+      message = "Too low!"
+    end
+    return message
+  end
+
+  def perfect_guess
+    message = "You got it right! The SECRET NUMBER is #{@@secret_number}."
+    reset
+    return message
+  end
+
 
   def match_color_with_message(message)
     if message == "Way too high!"
       color = "#ff0000"
     elsif message == "Too high!"
       color = "#ffcccc"
+    elsif message.include?("You got it right!")
+      color = "#33cc33"
     end
     color
   end
