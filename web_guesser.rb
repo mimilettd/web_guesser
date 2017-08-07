@@ -11,9 +11,17 @@ class WebGuesser
   def check_guess(guess)
     guess = guess.to_i
     if guess > @@secret_number
-      message = "Too high!"
+      if guess + 5 > @@secret_number
+        message = "Way too high!"
+      else
+        message = "Too high!"
+      end
     elsif guess < @@secret_number
-      message = "Too low!"
+      if guess - 5 < @@secret_number
+        message = "Way too low!"
+      else
+        message = "Too low!"
+      end
     else
       message = "You got it right! The SECRET NUMBER is #{@@secret_number}."
     end
